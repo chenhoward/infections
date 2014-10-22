@@ -19,6 +19,9 @@ class User:
             self.status_num = coach.get_status_num()
             coach.add_student(self)
 
+    def __repr__(self):
+        return str(self.get_name())
+
     def get_name(self):
         """
         Returns the name of the User.
