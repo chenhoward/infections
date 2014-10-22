@@ -45,8 +45,35 @@ def limited_infection(user, num):
     return True
 
 def exact_infection(starting_user, num):
-    fringe = [starting_user]
-    visited = set()
+    """
+    Infects exactly num users starting from starting_user.  Returns
+    True if it succeeds, else we did not find enough users so no User
+    is infected.
+
+    starting_user -- the User object that is the origin of the infection
+    num -- the number of Users infected if there are enough Users.
+    """
+
+    def upper_bound_cond(visited):
+        """
+        A cond for exact_infection to be used in the graph_search
+        algorithm.  Returns true if the size of visited is less
+        than the num given in the exact_infection arguments.
+
+        visited -- visited User set
+        """
+        return len(visited) < num
+
+    empty = lambda x: x
+    visited = graph_search(starting_user, upper_bound_cond, empty, add_to_fringe, False)
+    if len(visited) is num:
+        for user in list(visited):
+            user.infect()
+        return True
+    else:
+        return False
+
+
     while fringe:
         user = fringe.pop()
         if user not in visited:
@@ -75,7 +102,7 @@ def exact_infection(starting_user, num):
 
 def graph_search(starting_user, cond, visit, add_to_fringe, stack = True):
     """
-    A generalized graph search.  Returns the list of visited nodes.
+    A generalized graph search.  Returns the set of visited Users.
 
     starting_user -- The user we are starting on
     cond -- condition we continue the search that is a function
@@ -97,6 +124,7 @@ def graph_search(starting_user, cond, visit, add_to_fringe, stack = True):
             visit(user)
             add_to_fringe(user, fringe)
             visited.add(user)
+    return visited
 
 def always_true(visited):
     """

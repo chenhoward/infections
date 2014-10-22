@@ -113,5 +113,34 @@ class UserTest(unittest.TestCase):
         self.assertEqual(e.get_status(), 'Infected')
         self.assertEqual(f.get_status(), 'Infected')
 
+    def test_exact_infection1(self):
+        a = User('A')
+        b = User('B')
+        c = User('C')
+        d = User('D')
+        e = User('E')
+        f = User('F')
+        user_lst = [a, b, c, d]
+        e.add_student(f)
+        a.add_coach(b)
+        b.add_student(c)
+        d.add_student(a)
+        self.assertEqual(a.get_status(), 'Clean')
+        self.assertEqual(b.get_status(), 'Clean')
+        self.assertEqual(c.get_status(), 'Clean')
+        self.assertEqual(d.get_status(), 'Clean')
+        self.assertEqual(e.get_status(), 'Clean')
+        self.assertEqual(f.get_status(), 'Clean')
+        result = infections.exact_infection(a, 4)
+        self.assertTrue(result)
+        infected_count = 0
+        for user in user_lst:
+            infected_count += user.get_status_num()
+        self.assertEqual(infected_count, 4)
+        result = infections.exact_infection(f, 10)
+        self.assertFalse(result)
+        self.assertEqual(e.get_status(), 'Clean')
+        self.assertEqual(f.get_status(), 'Clean')
+
 if __name__ == '__main__':
     unittest.main()
