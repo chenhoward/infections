@@ -3,6 +3,7 @@ from user import User
 def total_infection(user):
     """
     Infects the whole connected graph of the user.
+    Returns True if infection occurs.
 
     user -- A user object.
     """
@@ -22,14 +23,15 @@ def total_infection(user):
     return True
 
 def limited_infection(user, num):
+    """
+    Infects approximately num users.
+    Returns True if any users are infected.
+
+    user -- A user object.
+    num -- the approximate number of users to be infected
+    """
     if not num:
         return False
-
-    def always_true(visited):
-        return True
-
-    def visit(user):
-        user.infect()
 
     count = [1]
 
@@ -86,4 +88,10 @@ def graph_search(starting_user, cond, visit, add_to_fringe, stack = True):
             visit(user)
             add_to_fringe(user, fringe)
             visited.add(user)
+
+def always_true(visited):
+    return True
+
+def visit(user):
+    user.infect()
 
