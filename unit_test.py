@@ -82,13 +82,13 @@ class UserTest(unittest.TestCase):
         for user in users:
             self.assertEqual(user.get_status(), 'Infected')
 
-    def test_total_infection1(self):
-        a = User()
-        b = User()
-        c = User()
-        d = User()
-        e = User()
-        f = User()
+    def test_limited_infection1(self):
+        a = User('A')
+        b = User('B')
+        c = User('C')
+        d = User('D')
+        e = User('E')
+        f = User('F')
         e.add_student(f)
         a.add_coach(b)
         b.add_student(c)
